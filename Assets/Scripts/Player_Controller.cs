@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class Player_Controller : MonoBehaviour
 {
     [SerializeField] private float jumpForce = 400f;
-    [SerializeField] private bool m_Grounded;
+     public bool m_Grounded;
     [SerializeField] private Transform m_GroundCheck;
     [SerializeField] private LayerMask ground;
     public bool isFacedRight = true;
@@ -15,7 +15,7 @@ public class Player_Controller : MonoBehaviour
     private Rigidbody2D my_rigidbody;
     private Vector3 velocity = Vector3.zero;
 
-    const float k_GroundedRadius = .2f;
+    const float k_GroundedRadius = .1f;
 
     [Header("Events")]
     [Space]
@@ -28,6 +28,7 @@ public class Player_Controller : MonoBehaviour
     private void Awake()
     {
         my_rigidbody = GetComponent<Rigidbody2D>();
+        if (OnLandEvent == null) OnLandEvent = new UnityEvent();
     }
 
     private void FixedUpdate()
@@ -44,7 +45,7 @@ public class Player_Controller : MonoBehaviour
 
                 if(!wasGrounded)
                 {
-                    OnLandEvent.Invoke(); 
+                    OnLandEvent.Invoke();
                 }
             }
         }
@@ -72,6 +73,7 @@ public class Player_Controller : MonoBehaviour
         if (m_Grounded && jump)
         {
             m_Grounded = false;
+            Debug.Log("jump");
             my_rigidbody.AddForce(new Vector2(0, jumpForce));
         }
     }
