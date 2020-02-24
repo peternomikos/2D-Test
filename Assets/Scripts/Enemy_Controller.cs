@@ -5,13 +5,13 @@ using UnityEngine;
 public class Enemy_Controller : MonoBehaviour
 {
     public float speed;
-    public int   health = 40;
+    
     private Animator enemy_anim;
     private Rigidbody2D enemyRigidbody;
+    private bool isFacedRight;
+    private Vector3 targetVelocity;
     private Vector3 velocity = Vector3.zero;
-    public Collider2D RightPlayerCheck;
-    public Collider2D LeftPlayerCheck;
-    public Vector2 target;
+    [SerializeField] private int health = 40;
     [SerializeField] private float jumpForce = 400f;
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;
 
@@ -20,12 +20,12 @@ public class Enemy_Controller : MonoBehaviour
     {
         enemy_anim     = GetComponent<Animator>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
+        isFacedRight = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Check_Orientation_of_Player();
         Move();
         DeathCheck();
     }
@@ -55,20 +55,25 @@ public class Enemy_Controller : MonoBehaviour
 
     private void Move()
     {
-        if (1 > 0)
+        if (isFacedRight)
         {
-            GetComponent<SpriteRenderer>().flipX = false;
+            targetVelocity = new Vector2(speed * 10f, enemyRigidbody.velocity.y);
         }
-        else if (2 < 0)
+        else
         {
-            GetComponent<SpriteRenderer>().flipX = true;
+            targetVelocity = new Vector2(-speed * 10f, enemyRigidbody.velocity.y);
         }
 
-        transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        enemyRigidbody.velocity = Vector3.SmoothDamp(enemyRigidbody.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
+
+        enemy_anim.SetBool("Moving", true);
     }
-
-    private void Check_Orientation_of_Player()
+    private void OnTriggerEnter2D(Collider2D col)
     {
-
+        if (col.CompareTag("Edges") || col.CompareTag("Enemy"))
+        {
+            isFacedRight = !isFacedRight;
+            GetComponent<SpriteRenderer>().flipX = isFacedRight;
+        }
     }
 }
