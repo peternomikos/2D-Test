@@ -22,18 +22,23 @@ public class Player_Movement : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;
-            this.animator.SetBool("Jump", true);
-        }        
+            animator.SetBool("Jump", true);
+        }
+        if(controller.m_Grounded == false)
+        {
+            jump = true;
+            animator.SetBool("Jump", true);
+        }
     }
 
     public void OnLand()
     {
         animator.SetBool("Jump", false);
+        jump = false;
         Debug.Log("Landed");
     }
     private void FixedUpdate()
     {
         controller.Move(horizontalMove * Time.deltaTime, jump);
-        jump = false;
     }
 }
