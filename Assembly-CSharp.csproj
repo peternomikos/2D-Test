@@ -63,7 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\AttackTrigger.cs" />
-    <Compile Include="Assets\Scripts\CheckPlayerPos.cs" />
+    <Compile Include="Assets\Scripts\Camera_Follow.cs" />
     <Compile Include="Assets\Scripts\Enemy_Controller.cs" />
     <Compile Include="Assets\Scripts\Player_Attack.cs" />
     <Compile Include="Assets\Scripts\Player_Controller.cs" />

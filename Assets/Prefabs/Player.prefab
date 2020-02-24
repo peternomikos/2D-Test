@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 29184342}
   - component: {fileID: 29184344}
   - component: {fileID: 29184343}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AttackTrigger_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 2010380970}
   - component: {fileID: 2010380971}
   - component: {fileID: 2010380972}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AttackTrigger_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 5694969337968867526}
   - component: {fileID: 5694969337968867527}
   - component: {fileID: 94954401}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -366,7 +366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5694969338674174688}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
