@@ -37,6 +37,12 @@ public class Player_Movement : MonoBehaviour
         jump = false;
         Debug.Log("Landed");
     }
+
+    public void OnHit()
+    {
+        animator.SetBool("Hit", false);
+    }
+
     private void FixedUpdate()
     {
         controller.Move(horizontalMove * Time.deltaTime, jump);

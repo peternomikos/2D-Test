@@ -5,17 +5,25 @@ using UnityEngine.Events;
 
 public class Player_Controller : MonoBehaviour
 {
+    public bool m_Grounded;
+    public bool isFacedRight;
+    public Animator animator;
+
     [SerializeField] private float jumpForce = 400f;
-     public bool m_Grounded;
+    [SerializeField] private float hitForce = -300f;
     [SerializeField] private Transform m_GroundCheck;
+    [SerializeField] private Transform m_EnemyCheck;
     [SerializeField] private LayerMask ground;
-    public bool isFacedRight = true;
+    [SerializeField] private LayerMask enemy;
+    [SerializeField] private int health;
+
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;
 
     private Rigidbody2D my_rigidbody;
     private Vector3 velocity = Vector3.zero;
-
+    private bool alive;
     const float k_GroundedRadius = .1f;
+    const float k_EnemyRadius = .1f;
 
     [Header("Events")]
     [Space]
@@ -28,26 +36,23 @@ public class Player_Controller : MonoBehaviour
     private void Awake()
     {
         my_rigidbody = GetComponent<Rigidbody2D>();
+        isFacedRight = true;
+        alive = true;
+        health = 10;
         if (OnLandEvent == null) OnLandEvent = new UnityEvent();
     }
 
     private void FixedUpdate()
     {
-        bool wasGrounded = m_Grounded;
-        m_Grounded = false;
-
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, ground);
-        for (int i = 0; i < colliders.Length; i++)
+        if (IsAlive())
         {
-            if (colliders[i].gameObject != gameObject)
-            {
-                m_Grounded = true;
+            CheckGround();
 
-                if(!wasGrounded)
-                {
-                    OnLandEvent.Invoke();
-                }
-            }
+            CheckHit();
+        }
+        else
+        {
+            animator.SetBool("Hit", false);
         }
     }
 
@@ -76,5 +81,57 @@ public class Player_Controller : MonoBehaviour
             Debug.Log("jump");
             my_rigidbody.AddForce(new Vector2(0, jumpForce));
         }
+    }
+
+    private bool IsAlive()
+    {
+        if (health > 0)
+        {
+            return true;
+        }
+        else
+        {
+            animator.SetBool("IsAlive", false);
+            return false;
+        }
+    }
+    
+    private void CheckGround()
+    {
+        bool wasGrounded = m_Grounded;
+        m_Grounded = false;
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, ground);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i].gameObject != gameObject)
+            {
+                m_Grounded = true;
+
+                if (!wasGrounded)
+                {
+                    OnLandEvent.Invoke();
+                }
+            }
+        }
+    }
+
+    private void CheckHit()
+    {
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(m_EnemyCheck.position, k_EnemyRadius, enemy);
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            if (enemies[i].gameObject != gameObject)
+            {
+                my_rigidbody.AddForce(new Vector2(hitForce, 0));
+                animator.SetBool("Hit", true);
+                health--;
+            }
+        }
+    }
+
+    private void KillPlayer()
+    {
+        animator.SetBool("IsAlive", true);
     }
 }

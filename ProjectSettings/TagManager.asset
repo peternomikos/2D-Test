@@ -18,8 +18,8 @@ TagManager:
   - 
   - 
   - Ground
+  - Map_Items
   - Characters
-  - 
   - 
   - 
   - 
@@ -44,4 +44,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 723463309
+    locked: 0
+  - name: Map_Items
+    uniqueID: 2424346591
+    locked: 0
+  - name: Characters
+    uniqueID: 2802373881
     locked: 0
